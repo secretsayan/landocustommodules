@@ -1,0 +1,17 @@
+{
+  "name": "drupal/sayan_qr",
+  "type": "drupal-module",
+  "description": "Module for Products and QR code",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/sayan_qr",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/sayan_qr",
+    "source": "http://cgit.drupalcode.org/sayan_qr"
+  },
+  "require": {
+    "endroid/qr-code": "2.x-dev",
+    "aferrandini/phpqrcode": "1.0.1"
+  }
+}

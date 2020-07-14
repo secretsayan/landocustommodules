@@ -1,0 +1,79 @@
+<?php
+
+/**
+ * @file
+ * Contains sayan_axl.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Form\FormStateInterface;
+
+/**
+ * Implements hook_help().
+ */
+function sayan_axl_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the sayan_axl module.
+    case 'help.page.sayan_axl':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Custom Module For Site Information Form Alter') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function sayan_axl_theme() {
+  return [
+    'sayan_axl' => [
+      'render element' => 'children',
+    ],
+  ];
+}
+
+/**
+ * Implements hook_form_alter().
+ */
+function sayan_axl_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+
+  if ($form_id == 'system_site_information_settings') {
+    $site_api_key = \Drupal::config('core.site_information')->get('siteapikey');
+
+    $form['site_information']['siteapikey'] = [
+      '#title' => t('Site API KEY'),
+      '#default_value' => isset($site_api_key) ? $site_api_key : t('No API Key Yet'),
+      '#type' => 'textfield',
+      '#maxlength' => 64,
+      '#size' => 64,
+      '#weight' => '-100',
+      '#description' => t('Enter Your Site API Key here'),
+      '#placholder' => t('Enter API Key'),
+
+    ];
+
+    // Change "Submit" button to "Update Configuration"
+    if (isset($site_api_key)) {
+      $form['actions']['submit']['#value'] = t('Update Configuration');
+    }
+
+    // Custom submit handler to save "siteapikey"
+    $form['actions']['submit']['#submit'][] = 'sayan_axl_custom_form_submit';
+
+  }
+}
+
+/**
+ * Custom Form Submit Funtion.
+ */
+function sayan_axl_custom_form_submit(&$form, &$form_state) {
+
+  \Drupal::configFactory()->getEditable('core.site_information')->set('siteapikey', $form_state->getValue('siteapikey'))->save();
+
+  // Show message using messenger service.
+  $messenger = \Drupal::messenger();
+  $messenger->addMessage(t('API KEY Saved Successfully'));
+}

@@ -1,0 +1,12 @@
+calculators.rdform:
+    title: RD
+    description: "This is a RD Calculator"
+    route_name: calculators.rdform
+    menu_name: main
+    weight: 1
+calculators.fdform:
+    title: FD
+    description: "This is a FD Calculator"
+    route_name: calculators.fdform
+    menu_name: main
+    weight: 1

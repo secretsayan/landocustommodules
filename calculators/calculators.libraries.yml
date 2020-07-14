@@ -1,0 +1,10 @@
+globalcalc:
+  version: 1.x
+  css:
+    theme:
+        css/calculatorstyle.css: {}
+  js:
+    js/calculatorscript.js: {}
+  dependencies:
+    - core/jquery
+  

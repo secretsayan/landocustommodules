@@ -1,0 +1,58 @@
+.result{
+    font-size: larger;
+    font-weight: bold;
+
+}
+.path-rdcalculator .region.region-content, .path-fd-fixed-deposit-calculator .region.region-content{
+    width:60%;
+    margin: 0 auto;
+    box-shadow: 3px 2px 19px -1px #cacaca;
+    border-radius: 30px;
+    padding: 10px;
+    text-align: center;    
+    font-size: large;
+
+}
+body{
+    font-family: consolas !important;
+}
+input#edit-submit{
+    border-radius: 0;
+    margin-left: 0;
+}
+
+.result{
+    margin: 5%;
+}
+
+.path-rdcalculator .page-title, .path-fd-fixed-deposit-calculator .page-title{
+    font-size: x-large;
+    font-weight: bold;
+    width:40%;
+    margin:0 auto;
+}
+#calculatorsrdform label, #calculatorsfdform label {
+    margin:0 auto;
+    text-align: center;
+}
+#calculatorsrdform input, #calculatorsfdform input {
+    text-align: center;
+}
+@media screen and (max-width: 480px) {
+    .path-rdcalculator .region.region-content, .path-fd-fixed-deposit-calculator .region.region-content{
+        width:90%;
+        margin: 0 auto;
+        box-shadow: 3px 2px 19px -1px #cacaca;
+        border-radius: 30px;
+        padding: 10px;
+        
+        font-size: x-large;
+    
+    }
+    .path-rdcalculator .page-title, .path-fd-fixed-deposit-calculator .page-title {
+        font-size: x-large;
+        font-weight: bold;
+        width:60%;
+        margin:0 auto;
+    }
+  }

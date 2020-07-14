@@ -1,0 +1,9 @@
+mymodule-style:
+  css:
+    theme:
+      css/animate.css: {}
+
+  js:
+    js/script.js: {}
+  dependencies:
+    - core/jquery

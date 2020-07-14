@@ -1,0 +1,21 @@
+<?php
+/**
+ * @file for calculators module.
+ */
+function calculators_page_attachments_alter(array &$attachments){
+    $attachments['#attached']['library'][] = 'calculators/globalcalc';
+
+}
+
+/**
+ * Implements hook_theme().
+ */
+function calculators_theme($existing, $type, $theme, $path) {
+
+    return [
+        'hometemplate' => [
+            'variables' => ['items' => [], 'title' => 'Home Page' ],
+        ]
+    ];
+  
+}

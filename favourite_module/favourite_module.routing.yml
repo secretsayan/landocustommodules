@@ -1,0 +1,33 @@
+favourite_module.add_favourite:
+  path : '/offer/favourite'
+  defaults: 
+    _controller: '\Drupal\favourite_module\Controller\FavouriteModuleController::store_favourite_ajax'
+    _title : 'Add to Favourites'
+  requirements:
+    _permission: 'access content'
+    
+favourite_module.callKml:
+  path : '/callKml'
+  defaults:
+    _controller: '\Drupal\favourite_module\Controller\FavouriteModuleController::call_kml'
+    _title : 'Call Kml'
+  requirements:
+    _permission: 'access content'
+    
+favourite_module.remove_favourite:
+  path : '/offer/unfavourite'
+  defaults:
+    _controller: '\Drupal\favourite_module\Controller\FavouriteModuleController::destroy_favourite_ajax'
+    _title : 'Remove Favourites'
+  requirements:
+    _permission: 'access content'
+    
+favourite_module.sendsms:
+  path : '/offer/sendsms'
+  defaults:
+    _controller: '\Drupal\favourite_module\Controller\FavouriteModuleController::get_promo'
+    _title : 'Send SMS'
+  requirements:
+    _permission: 'access content'
+
+  

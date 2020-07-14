@@ -1,0 +1,50 @@
+<?php 
+
+/**
+ * @file
+ * This is a module file.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function mymodule_theme($existing, $type, $theme, $path) {
+
+    return [
+        'heroList' => [
+            'variables' => ['items' => [], 'title' => '' ],
+        ]
+    ];
+  
+}
+
+/**
+ * hook_form_alter().
+ */
+function mymodule_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id){
+    if($form_id == "node_article_form"){
+        $form['body']['widget'][0]['#title'] = "Modified Body";
+        //kint($form);
+        //die();
+        $form["#validate"][] = "_mymodule_article_form_validate";
+    }
+
+    // Changing text of submit button of comment form to "Comment".
+    if ($form_id == "comment_comment_form") {
+        $form["actions"]["submit"]["#value"] = t("Comment");
+    }
+    
+    
+
+}
+
+/**
+ * Form validate.
+ */
+function _mymodule_article_form_validate(&$form, $form_state){
+    //kint($form_state);
+    if(is_numeric($form_state->getValue('title')[0]['value'] )){
+        $form_state->setErrorByName('title', $this->t("Number not allowed"));
+    }
+    //die();
+}

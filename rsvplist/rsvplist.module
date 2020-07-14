@@ -1,0 +1,60 @@
+<?php
+/**
+ * @file
+ * RSVP List module.
+ */
+use Drupal\Core\Form\FormStateInterface;
+ /**
+  * Implements hook_form_alter.
+  */
+function rsvplist_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+    if($form_id == "node_article_edit_form" || $form_id == "node_article_edit_form"){
+        $node = $form_state->getFormObject()->getEntity();
+        $current_node_type =  $node->getType();
+        $config = Drupal::config('rsvplist_settings');
+        $types = $config->get('allowed_types', array());
+        // RSVP options for administrators
+        if (in_array($current_node_type, array("article", "page"))){
+             $form['rsvplist'] = array(
+                '#type' => 'details',
+                '#title' => t('RSVP Collection'),
+                '#access' => \Drupal::currentUser()->hasPermission('administer rsvplist'),
+                '#group' => 'advanced',
+                '#weight' => 100,
+    
+            );
+    
+            $enabler = Drupal::service('rsvplist.enabler');
+            $form['rsvplist']['rsvplist_enabled'] = array(
+                '#type' => 'checkbox',
+                '#title' => t('Collect RSVP email-address for this node'),
+                '#default_value' => $enabler->isEnabled($node),
+            );
+            foreach (array_keys($form['actions']) as $action){
+                if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit'){
+                    $form['actions'][$action]['#submit'][] = 'rsvplist_form_submit';
+                }
+    
+            }
+        }
+
+    }
+
+}
+
+/**
+ * Custom Submit Handler.
+ */
+function rsvplist_form_submit(array $form, FormStateInterface $form_state){
+    $enabler = \Drupal::service('rsvplist.enabler');
+    $node = $form_state->getFormObject()->getEntity();
+  //  drupal_set_message("test".$form_state->getValue('rsvplist_enabled'));
+   // print($form_state->getValue('rsvplist_enabled'));
+    //die("here");
+    if ($form_state->getValue('rsvplist_enabled') ==  1) {
+        //die("hereinside");
+        $enabler->setEnabled($node);
+    }else{
+        $enabler->delEnabled($node);
+    }
+}

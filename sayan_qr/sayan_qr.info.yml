@@ -1,0 +1,12 @@
+name: sayan_qr
+type: module
+description: Module for Products and QR code
+core: 8.x
+package: Custom
+dependencies:
+    - datetime
+    - image
+    - link
+    - path
+    - text
+

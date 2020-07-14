@@ -1,0 +1,24 @@
+calculators.rdform:
+  path: '/rdcalculator'
+  defaults:
+    _form: '\Drupal\calculators\Form\RdForm'
+    _title: 'RD Calculator'
+  requirements:
+    _permission: 'access content'
+calculators.fdform:
+  path: '/fd-fixed-deposit-calculator'
+  defaults:
+    _form: '\Drupal\calculators\Form\FdForm'
+    _title: 'FD Calculator'
+  requirements:
+    _permission: 'access content'
+calculators.home:
+  path: '/home'
+  defaults:
+    _controller: '\Drupal\calculators\Controller\CalculatorController::home'
+    _title: 'Home'
+  requirements:
+    _permission: 'access content'  
+     
+
+

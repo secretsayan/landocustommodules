@@ -1,0 +1,5 @@
+name : "Favourite Module"
+description : "To store and show user favourite item."
+type: module
+core: 8.x
+

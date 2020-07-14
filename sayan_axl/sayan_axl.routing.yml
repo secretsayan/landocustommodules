@@ -1,0 +1,6 @@
+sayan_axl.content:
+  path: '/page_json/{apikey}/{id}'
+  defaults:
+   _controller: 'Drupal\sayan_axl\Controller\RestController::getContent'
+  requirements:
+    _permission: 'access content'

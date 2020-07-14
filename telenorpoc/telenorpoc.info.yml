@@ -1,0 +1,4 @@
+name: "TelenorPOC"
+description: "Module for POC for Telenor upgrade"
+type: module
+core: 8.x

@@ -1,0 +1,14 @@
+{
+  "name": "drupal/sayan_axl",
+  "type": "drupal-module",
+  "description": "Custom Module For Site Information Form Alter",
+  "keywords": ["Drupal"],
+  "license": "GPL-2.0+",
+  "homepage": "https://www.drupal.org/project/sayan_axl",
+  "minimum-stability": "dev",
+  "support": {
+    "issues": "https://www.drupal.org/project/issues/sayan_axl",
+    "source": "http://cgit.drupalcode.org/sayan_axl"
+  },
+  "require": { }
+}

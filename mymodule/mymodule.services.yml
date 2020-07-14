@@ -1,0 +1,9 @@
+services:
+  mymodule.hero_articles:
+    class: Drupal\mymodule\HeroArticleService
+    arguments: ["@entity.query", "@entity.manager"]
+
+  mymodule.event_subscriber:
+    class: Drupal\mymodule\EventSubscriber\MymoduleInitSubscriber
+    tags:
+      - { name: "event_subscriber" }

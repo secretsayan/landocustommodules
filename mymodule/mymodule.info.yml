@@ -1,0 +1,4 @@
+name: "mymodule"
+description: "module for customisations and testing"
+type: module
+core: 8.x

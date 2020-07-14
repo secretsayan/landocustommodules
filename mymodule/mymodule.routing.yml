@@ -1,0 +1,33 @@
+mymodule.herolist:
+  path: '/hero'
+  defaults:
+    _controller: '\Drupal\mymodule\Controller\MyModuleController::heroList'
+    _title: 'Our Heroes'
+  requirements:
+    _permission: 'access content'
+
+mymodule.heroform:
+  path: '/heroform'
+  defaults:
+    _form: '\Drupal\mymodule\Form\HeroForm'
+    _title: 'Who will win'
+  requirements:
+    _permission: 'can see hero form'
+
+mymodule.ajaxform:
+    path: '/ajaxform'
+    defaults:
+        _form: '\Drupal\mymodule\Form\AjaxForm'
+        _title: 'Who will win By AJax'
+    requirements:
+        _permission: 'access content'
+
+mymodule.configform:
+    path: '/admin/mymodule'
+    defaults:
+        _form: '\Drupal\mymodule\Form\ConfigForm'
+        _title: 'Set Config Title'
+    requirements:
+        _permission: 'administer site configuration'        
+    
+

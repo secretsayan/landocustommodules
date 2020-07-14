@@ -1,0 +1,7 @@
+'can see hero form':
+  title: 'View Heroform'
+  description: 'User with this permission can see Heroform'
+
+'can see hero list':
+  title: 'View List'
+  description: 'User with this permission can view HeroList'
