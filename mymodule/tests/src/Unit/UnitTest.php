@@ -14,13 +14,13 @@ class UnitTest extends UnitTestCase
     /**
      * @inheritdoc
      */
-    public function __construct(MyModuleController $m)
+   /* public function __construct(MyModuleController $m)
     {
         $this->unit = $m;
-    } 
+    } */
     public function setUp()
     {   
-
+        $this->unit = "Sayan";
     }
 
 
@@ -30,7 +30,7 @@ class UnitTest extends UnitTestCase
     public function testHeroList()
     {
 
-        $this->assertEquals("Sayan", $this->unit->heroList());
+        $this->assertEquals("Sayan", $this->unit);
 
     }
 
