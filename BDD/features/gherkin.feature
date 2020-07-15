@@ -15,6 +15,12 @@ Feature: In order to view my Account details,
         And I follow "Herolist"
         Then I should see "Our Heroes"
 
-    Scenario: Verify user is able to access HeroList
+    Scenario: Verify user is able to access Homepage
         Given I am on homepage
         Then I should see "Welcome to Drupal"
+    
+    Scenario: Verify Heroform Validation
+        Given I am on homepage
+        And I follow "Heroform"
+        And I press "edit-submit"
+        Then I should see "Rival 1"
