@@ -11,13 +11,7 @@ class UnitTest extends UnitTestCase
     /**
      * @inheritdoc
      */
-    /**
-     * @inheritdoc
-     */
-   /* public function __construct(MyModuleController $m)
-    {
-        $this->unit = $m;
-    } */
+
     public function setUp()
     {   
         $this->unit = "Sayan";
