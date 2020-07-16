@@ -9,7 +9,7 @@ use Drupal\Core\Config\ConfigFactory;
 /**
  * Main Controller class for this module.
  */
-class   extends ControllerBase
+class  MyModuleController extends ControllerBase
 {
 
     private $articleHeroService;
