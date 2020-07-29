@@ -1,5 +1,8 @@
 <?php 
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Dompdf\Dompdf;
+
 /**
  * @file
  * This is a module file.
@@ -22,6 +25,8 @@ function mymodule_theme($existing, $type, $theme, $path) {
  * hook_form_alter().
  */
 function mymodule_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id){
+    //print_r($form_id);
+   // die;
     if($form_id == "node_article_form"){
         $form['body']['widget'][0]['#title'] = "Modified Body";
         //kint($form);
@@ -33,6 +38,15 @@ function mymodule_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_
     if ($form_id == "comment_comment_form") {
         $form["actions"]["submit"]["#value"] = t("Comment");
     }
+
+    // Webform submission handler
+
+    if ($form_id == "webform_submission_docusign_test_form_add_form") {
+        $form['actions']['submit']['#submit'][] = '_mymodule_docusign_submit';
+        
+    }
+
+
     
     
 
@@ -48,3 +62,171 @@ function _mymodule_article_form_validate(&$form, $form_state){
     }
     //die();
 }
+
+/**
+ * Webform Submission Handler for Docusign
+ */
+
+ function _mymodule_docusign_submit(array &$form, \Drupal\Core\Form\FormStateInterface $form_state){
+    \Drupal::messenger()->addMessage('Form Submitted');
+
+    $signerName = $form_state->getValue('name');
+    $signerEmail = $form_state->getValue('email');
+
+
+    //pdf generation
+
+
+    $result = '<table class="bordered">
+    <tr class="font-12">
+        <th style="width: 25px"></th>
+        <th style="width: 100px">Name</th>
+        <th style="width: 25px"></th>
+        <th style="width: 300px">Email</th>
+        <th style="width: 300px"></th>
+
+    </tr>
+   
+    <tr>
+        <td style="width: 25px">1</td>
+        <td style="width: 100px">'.$signerName.'</td>
+        <td style="width: 25px"></td>
+        <td class="font-12" style="width: 300px; word-break:break-all; word-wrap:break-word;">
+        '.$signerEmail.'
+        </td>
+        <td class="font-12" style="width: 300px; word-break:break-all; word-wrap:break-word;">
+
+        </td>
+
+    </tr>
+
+</table>';
+
+    //if (module_exists('print') && !empty($result)) {
+      $dompdf = new Dompdf();
+      $dompdf->load_html($result);
+      $dompdf->render();
+      $pdfoutput = $dompdf->output();
+     // $filename = 'demo.pdf';
+      $filepath = drupal_get_path('module', 'mymodule') . '/demo.pdf';
+      $fp = fopen($filepath, "w+");
+      fwrite($fp, $pdfoutput);
+      fclose($fp);
+    //}
+
+    //die('Form Submitted' . $signerName. ' and '. $signerEmail);
+
+    \Drupal::messenger()->addMessage('Form Submitted' . $signerName. ' and '. $signerEmail . ' and ' . $filepath . drupal_get_path('module', 'mymodule'));
+    
+
+        # Settings
+    # Fill in these constants
+    #
+    # Obtain an OAuth access token from https://developers.docusign.com/oauth-token-generator
+    $accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjY4MTg1ZmYxLTRlNTEtNGNlOS1hZjFjLTY4OTgxMjIwMzMxNyJ9.eyJUb2tlblR5cGUiOjUsIklzc3VlSW5zdGFudCI6MTU5NTg1MjA5OCwiZXhwIjoxNTk1ODgwODk4LCJVc2VySWQiOiI1MDEzZTc2My00Y2ViLTQ1ZDQtYWIwMC0yMjkzNmZhMjcyODgiLCJzaXRlaWQiOjEsInNjcCI6WyJzaWduYXR1cmUiLCJjbGljay5tYW5hZ2UiLCJvcmdhbml6YXRpb25fcmVhZCIsInJvb21fZm9ybXMiLCJncm91cF9yZWFkIiwicGVybWlzc2lvbl9yZWFkIiwidXNlcl9yZWFkIiwidXNlcl93cml0ZSIsImFjY291bnRfcmVhZCIsImRvbWFpbl9yZWFkIiwiaWRlbnRpdHlfcHJvdmlkZXJfcmVhZCIsImR0ci5yb29tcy5yZWFkIiwiZHRyLnJvb21zLndyaXRlIiwiZHRyLmRvY3VtZW50cy5yZWFkIiwiZHRyLmRvY3VtZW50cy53cml0ZSIsImR0ci5wcm9maWxlLnJlYWQiLCJkdHIucHJvZmlsZS53cml0ZSIsImR0ci5jb21wYW55LnJlYWQiLCJkdHIuY29tcGFueS53cml0ZSJdLCJhdWQiOiJmMGYyN2YwZS04NTdkLTRhNzEtYTRkYS0zMmNlY2FlM2E5NzgiLCJhenAiOiJmMGYyN2YwZS04NTdkLTRhNzEtYTRkYS0zMmNlY2FlM2E5NzgiLCJpc3MiOiJodHRwczovL2FjY291bnQtZC5kb2N1c2lnbi5jb20vIiwic3ViIjoiNTAxM2U3NjMtNGNlYi00NWQ0LWFiMDAtMjI5MzZmYTI3Mjg4IiwiYW1yIjpbImludGVyYWN0aXZlIl0sImF1dGhfdGltZSI6MTU5NTg1MjA5NSwicHdpZCI6IjU1NTg4ZGQzLTMzYjMtNDIxMi1hZDRjLTY3MjE3MzNiMjZlNiJ9.q-nWNpz1M9n_Tao8gszRDbA5SegIzehn12hBoxs3WfzOPcpNZmLm62dx5yT6hQ_mog7dfwTAeWm_nZmI_if9wDlYHZnv05pjH7Qns8jFYuZva0bptOQVSXG6Z2GSUa1oN-4p0r1BJjugZnhDQ6iN6cFpKd75ddT3GG_gNYmWBtImngCFefzrjws03l-nGgherfJMst11kKRPJmDdhsYIFp9lUu_eUCT4BlQZkMcnbFsbCvnHFHP07HwABOCZc83Y8okBkx-7E34nIXOy3zf8ZY0v-AyokrxySIwzSBX9juOVl1BRpGbGqsEipMw-TuTvB_3QPtGYRISZm3Th7HK16w';
+    # Obtain your accountId from appdemo.docusign.com -- the account id is shown in the drop down on the
+    # upper right corner of the screen by your picture or the default picture. 
+    $accountId = '11064736';
+    # Recipient Information:
+    //$signerName = 'John Signer';
+    //$signerEmail = 'john.signer@example.com';
+    # The document you wish to send. Path is relative to the root directory of this repo.
+    $fileNamePath = 'Invoice_81719008.pdf';
+    # The url of this web application's folder. If you leave it blank, the script will attempt to figure it out.
+    $baseUrl = 'http://localhost:32772/';
+    $clientUserId = '123'; # Used to indicate that the signer will use an embedded
+                        # Signing Ceremony. Represents the signer's userId within
+                        # your application.
+    $authenticationMethod = 'None'; # How is this application authenticating
+                                    # the signer? See the `authenticationMethod' definition
+                                    # https://developers.docusign.com/esign-rest-api/reference/Envelopes/EnvelopeViews/createRecipient
+    # The API base_path
+    $basePath = 'https://demo.docusign.net/restapi';
+    # Constants
+    $appPath = getcwd();
+# Step 1. The envelope definition is created.
+    #         One signHere tab is added.
+    #         The document path supplied is relative to the working directory
+    #
+    # Create the component objects for the envelope definition...
+    //
+    //$contentBytes = file_get_contents($appPath . "/" . $fileNamePath);
+    $contentBytes = file_get_contents($filepath);
+    $base64FileContent =  base64_encode ($contentBytes);
+
+    \Drupal::messenger()->addMessage("end");
+
+    $document = new DocuSign\eSign\Model\Document([ # create the DocuSign document object 
+        'document_base64' => $base64FileContent, 
+        'name' => 'Example document', # can be different from actual file name
+        'file_extension' => 'pdf', # many different document types are accepted
+        'document_id' => '1' # a label used to reference the doc
+    ]);
+
+    # The signer object
+    $signer = new DocuSign\eSign\Model\Signer([ 
+        'email' => $signerEmail, 'name' => $signerName, 'recipient_id' => "1", 'routing_order' => "1",
+        'client_user_id' => $clientUserId # Setting the client_user_id marks the signer as embedded
+    ]);
+
+    $signHere = new DocuSign\eSign\Model\SignHere([ # DocuSign SignHere field/tab
+        'document_id' => '1', 'page_number' => '1', 'recipient_id' => '1', 
+        'tab_label' => 'SignHereTab', 'x_position' => '195', 'y_position' => '147'
+    ]);
+
+    # Add the tabs to the signer object
+    # The Tabs object wants arrays of the different field/tab types
+    $signer->setTabs(new DocuSign\eSign\Model\Tabs(['sign_here_tabs' => [$signHere]]));
+
+    # Next, create the top level envelope definition and populate it.
+    $envelopeDefinition = new DocuSign\eSign\Model\EnvelopeDefinition([
+        'email_subject' => "Please sign this document",
+        'documents' => [$document], # The order in the docs array determines the order in the envelope
+        'recipients' => new DocuSign\eSign\Model\Recipients(['signers' => [$signer]]), # The Recipients object wants arrays for each recipient type
+        'status' => "sent" # requests that the envelope be created and sent.
+    ]);
+
+    #  Step 2. Create/send the envelope.
+    #
+    $config = new DocuSign\eSign\Configuration();
+    $config->setHost($basePath);
+    $config->addDefaultHeader("Authorization", "Bearer " . $accessToken);
+    $apiClient = new DocuSign\eSign\Client\ApiClient($config);
+    $envelopeApi = new DocuSign\eSign\Api\EnvelopesApi($apiClient);
+    $results = $envelopeApi->createEnvelope($accountId, $envelopeDefinition);
+    $envelopeId = $results['envelope_id'];
+    #
+    # Step 3. The envelope has been created.
+    #         Request a Recipient View URL (the Signing Ceremony URL)
+    #
+    if ($baseUrl == '') {
+        # Try to figure out our URL folder
+        # NOTE: The following code relies on browser-supplied headers to be correct.
+        #       In production, DO NOT use this code since it is not bullet-proof.
+        #       Instead, set the $baseUrl appropriately.
+        $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+        # remove the current script name from the $baseUrl:
+        $chars = -1 * (strlen(__FILE__) - strlen(__DIR__));
+        $baseUrl = substr($baseUrl, 0, $chars);
+    }
+    $recipientViewRequest = new DocuSign\eSign\Model\RecipientViewRequest([
+        'authentication_method' => $authenticationMethod, 'client_user_id' => $clientUserId,
+        'recipient_id' => '1', 'return_url' => $baseUrl . '/form/docusign-test-form',
+        'user_name' => $signerName, 'email' => $signerEmail
+    ]);
+    $results = $envelopeApi->createRecipientView($accountId, $envelopeId,
+        $recipientViewRequest);
+    
+    #
+    # Step 4. The Recipient View URL (the Signing Ceremony URL) has been received.
+    #         The user's browser will be redirected to it.
+    #
+
+    $response = new RedirectResponse($results['url'], 302);
+    $response->send();  
+    
+    return $results['url'];
+    
+
+
+ }
