@@ -26,20 +26,20 @@ class UnitTest extends UnitTestCase
      */
     public function testHeroList()
     {
-      /*  $articleService = $this->createMock(HeroArticleService::class);
+        //$articleService = $this->createMock(HeroArticleService::class);
 
-        $configFactory = $this->createMock(ConfigFactory::class);
+        //$configFactory = $this->createMock(ConfigFactory::class);
 
-        $container = new ContainerBuilder();
+        //$container = new ContainerBuilder();
     
-        \Drupal::setContainer($container);
-        $container->set('current_user', $serviceGitCommands);
+        //\Drupal::setContainer($container);
+        //$container->set('current_user', $serviceGitCommands);
 
-        $current_user = \Drupal::service("current_user");
+        //$current_user = \Drupal::service("current_user");
         
-        $mymod = new MyModuleController($articleService, $configFactory, $current_user);
+        //$mymod = new MyModuleController($articleService, $configFactory, $current_user);
 
-        $this->assertArrayHasKey('#theme', $mymod->heroList());*/
+        //$this->assertArrayHasKey('#theme', $mymod->heroList());
 
         $this->assertEquals("Sayan",  $this->unit);
 

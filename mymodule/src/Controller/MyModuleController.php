@@ -46,7 +46,7 @@ class  MyModuleController extends ControllerBase
     public function heroList()
     {
 
-        //kint($this->$articleHeroService->getArticles()); 
+       kint($this->articleHeroService->getArticles()); 
         if($this->current_user->hasPermission('can see hero list')) {
             $text = "Hello new page for testing";
         }else{

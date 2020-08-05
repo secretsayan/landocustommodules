@@ -3,7 +3,9 @@
 namespace Drupal\mymodule;
 
 use Drupal\Core\Entity\Query\QueryFactory;
-use Drupal\Core\Entity\EntityManager;    
+use Drupal\Core\Entity\EntityManager;
+use Drupal\Core\Entity\EntityTypeManager;    
+use \Drupal\Core\Entity\EntityTypeManagerInterface; 
 
 /**
  * Class for Article Service.
@@ -11,17 +13,15 @@ use Drupal\Core\Entity\EntityManager;
 class HeroArticleService
 {
 
-    private $entityQuery;
-    private $entityManager;
+   private $entityTypeManager;
 
     /**
      * Constructor to initialise the member variables.
      */
-    public function __construct(QueryFactory $entityQuery, EntityManager $entityManager)
+    public function __construct( EntityTypeManagerInterface  $entityTypeManager )
     {
         
-        $this->entityManager = $entityManager;
-        $this->entityQuery = $entityQuery;
+        $this->entityTypeManager = $entityTypeManager;
     }
     /**
      * Function to getArticles.
@@ -31,11 +31,12 @@ class HeroArticleService
     public function getArticles()
     {
 
-        $nids =  $this->entityQuery
-            ->get('node')
-            ->condition('type', 'article')
-            ->execute();
+        $values = [
+            'type' => 'page',
+            ];
             
-        return $this->entityManager->getStorage('node')->loadMultiple($nids);
+        return $this->entityTypeManager
+            ->getStorage('node')
+            ->loadByProperties($values);
     }
 }
