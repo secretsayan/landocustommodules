@@ -3,6 +3,7 @@
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Dompdf\Dompdf;
 
+
 /**
  * @file
  * This is a module file.
@@ -72,46 +73,193 @@ function _mymodule_article_form_validate(&$form, $form_state){
 
     $signerName = $form_state->getValue('name');
     $signerEmail = $form_state->getValue('email');
-
+    $abn = $form_state->getValue('abn');
+    $contact_name = $form_state->getValue('contact_name');
+    $unit_number = $form_state->getValue('unit_number');
+    $street_number = $form_state->getValue('street_number');
+    $street_name = $form_state->getValue('street_name');
+    $suburb = $form_state->getValue('suburb');
+    $postal_code = $form_state->getValue('postal_code');
+    $daytime_telephone = $form_state->getValue('daytime_telephone');
 
     //pdf generation
 
+    //TCPDF start
+    $pdf = new \TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-    $result = '<table class="bordered">
-    <tr class="font-12">
-        <th style="width: 25px"></th>
-        <th style="width: 100px">Name</th>
-        <th style="width: 25px"></th>
-        <th style="width: 300px">Email</th>
-        <th style="width: 300px"></th>
+    // set document information
+    $pdf->SetCreator(PDF_CREATOR);
+    $pdf->SetAuthor('Wipro');
+    $pdf->SetTitle('Demo Material for Docusign');
+    $pdf->SetSubject('Demo Tutorial');
+    $pdf->SetKeywords('TCPDF, PDF, example, test, guide');
 
-    </tr>
-   
-    <tr>
-        <td style="width: 25px">1</td>
-        <td style="width: 100px">'.$signerName.'</td>
-        <td style="width: 25px"></td>
-        <td class="font-12" style="width: 300px; word-break:break-all; word-wrap:break-word;">
-        '.$signerEmail.'
-        </td>
-        <td class="font-12" style="width: 300px; word-break:break-all; word-wrap:break-word;">
+    // set default header data
+    $pdf->SetHeaderData(PDF_HEADER_LOGO, PDF_HEADER_LOGO_WIDTH, PDF_HEADER_TITLE.' 014', PDF_HEADER_STRING);
 
-        </td>
+    // set header and footer fonts
+    $pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+    $pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
-    </tr>
+    // set default monospaced font
+    $pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
-</table>';
+    // set margins
+    $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+    $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
+    $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
+
+    // set auto page breaks
+    $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
+
+    // set image scale factor
+    $pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+    // set some language-dependent strings (optional)
+    if (@file_exists(dirname(__FILE__).'/lang/eng.php')) {
+        require_once(dirname(__FILE__).'/lang/eng.php');
+        $pdf->setLanguageArray($l);
+    }
+
+    // ---------------------------------------------------------
+
+
+    // set font
+    $pdf->SetFont('courier', '', 14, '', false);
+
+    // add a page
+    $pdf->AddPage();
+
+    // set default form properties
+
+    $html = '
+    <style>
+        td.data {
+             border: 1px solid #ccc;
+             padding: 5px;
+             margin: 5%;
+             box-shadow: 5px 5px 5px 5px #888888;
+             background-color: rgb(232, 240, 254);
+        }
+    </style>
+        
+        <table  border="0"  cellspacing="3" cellpadding="4">
+        
+        <tr>
+            <td align="left"><b>Company Name</b></td>
+            <td align="left"><b>ABN</b></td>
+        </tr>
+
+        <tr>
+            <td class="data" align="left">'.$signerName.'</td>
+            <td class="data" align="left">'.$abn.'</td>
+        </tr>
+
+        <tr>
+        <td></td>
+        <td></td>
+        </tr>
+
+        <tr>
+            <td align="left"><b>Contact Name</b></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="data" align="left">'.$contact_name.'</td>
+            <td></td>
+        </tr>
+
+        <tr>
+        <td></td>
+        <td></td>
+        </tr>
+
+        <tr>
+            <td align="left"><b>Unit Number</b></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="data" align="left">'.$unit_number.'</td>
+            <td></td>
+        </tr>
+
+        <tr>
+        <td></td>
+        <td></td>
+        </tr>
+
+        <tr>
+            <td align="left"><b>Street number</b></td>
+            <td align="left"><b>Street name</b></td>
+        </tr>
+        <tr>
+            <td  class="data" align="left">'.$street_number.'</td>
+            <td  class="data" align="left">'.$street_name.'</td>
+        </tr>
+
+
+        <tr>
+        <td></td>
+        <td></td>
+        </tr>
+
+        <tr>
+            <td align="left"><b>Daytime Telephone</b></td>
+            <td align="left"><b>Email</b></td>
+        </tr>
+        <tr>
+            <td class="data" align="left">'.$daytime_telephone.'</td>
+            <td class="data" align="left">'.$signerEmail.'</td>
+        </tr>
+
+        <tr>
+        <td></td>
+        <td></td>
+        </tr>
+
+        <tr>
+            <td align="left"><b>Suburb</b></td>
+            <td align="left"><b>Post Code</b></td>
+        </tr>
+        <tr>
+            <td class="data" align="left">'.$suburb.'</td>
+            <td class="data" align="left">'.$postal_code.'</td>
+        </tr>
+
+        
+    </table> ';
+    
+
+    // output the HTML content
+    $pdf->writeHTML($html, true, false, true, false, '');
+
+    // Print some HTML Cells
+
+    $pdf->SetFillColor(255,255,0);
+
+
+
+
+    // Add Javascript code
+   // $pdf->IncludeJS($js);
+
+    // ---------------------------------------------------------
+
+    //Close and output PDF document
+    $pdf->Output(__DIR__ .'/example_014.pdf', 'F');
+
+    //TCPDF END
 
     //if (module_exists('print') && !empty($result)) {
-      $dompdf = new Dompdf();
-      $dompdf->load_html($result);
-      $dompdf->render();
-      $pdfoutput = $dompdf->output();
+     // $dompdf = new Dompdf();
+     // $dompdf->load_html($result);
+     // $dompdf->render();
+      //$pdfoutput = $dompdf->output();
      // $filename = 'demo.pdf';
-      $filepath = drupal_get_path('module', 'mymodule') . '/demo.pdf';
-      $fp = fopen($filepath, "w+");
-      fwrite($fp, $pdfoutput);
-      fclose($fp);
+      $filepath = drupal_get_path('module', 'mymodule') . '/example_014.pdf';
+     // $fp = fopen($filepath, "w+");
+     // fwrite($fp, $pdf->Output());
+     // fclose($fp);
     //}
 
     //die('Form Submitted' . $signerName. ' and '. $signerEmail);
@@ -123,7 +271,7 @@ function _mymodule_article_form_validate(&$form, $form_state){
     # Fill in these constants
     #
     # Obtain an OAuth access token from https://developers.docusign.com/oauth-token-generator
-    $accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjY4MTg1ZmYxLTRlNTEtNGNlOS1hZjFjLTY4OTgxMjIwMzMxNyJ9.eyJUb2tlblR5cGUiOjUsIklzc3VlSW5zdGFudCI6MTU5NTg1MjA5OCwiZXhwIjoxNTk1ODgwODk4LCJVc2VySWQiOiI1MDEzZTc2My00Y2ViLTQ1ZDQtYWIwMC0yMjkzNmZhMjcyODgiLCJzaXRlaWQiOjEsInNjcCI6WyJzaWduYXR1cmUiLCJjbGljay5tYW5hZ2UiLCJvcmdhbml6YXRpb25fcmVhZCIsInJvb21fZm9ybXMiLCJncm91cF9yZWFkIiwicGVybWlzc2lvbl9yZWFkIiwidXNlcl9yZWFkIiwidXNlcl93cml0ZSIsImFjY291bnRfcmVhZCIsImRvbWFpbl9yZWFkIiwiaWRlbnRpdHlfcHJvdmlkZXJfcmVhZCIsImR0ci5yb29tcy5yZWFkIiwiZHRyLnJvb21zLndyaXRlIiwiZHRyLmRvY3VtZW50cy5yZWFkIiwiZHRyLmRvY3VtZW50cy53cml0ZSIsImR0ci5wcm9maWxlLnJlYWQiLCJkdHIucHJvZmlsZS53cml0ZSIsImR0ci5jb21wYW55LnJlYWQiLCJkdHIuY29tcGFueS53cml0ZSJdLCJhdWQiOiJmMGYyN2YwZS04NTdkLTRhNzEtYTRkYS0zMmNlY2FlM2E5NzgiLCJhenAiOiJmMGYyN2YwZS04NTdkLTRhNzEtYTRkYS0zMmNlY2FlM2E5NzgiLCJpc3MiOiJodHRwczovL2FjY291bnQtZC5kb2N1c2lnbi5jb20vIiwic3ViIjoiNTAxM2U3NjMtNGNlYi00NWQ0LWFiMDAtMjI5MzZmYTI3Mjg4IiwiYW1yIjpbImludGVyYWN0aXZlIl0sImF1dGhfdGltZSI6MTU5NTg1MjA5NSwicHdpZCI6IjU1NTg4ZGQzLTMzYjMtNDIxMi1hZDRjLTY3MjE3MzNiMjZlNiJ9.q-nWNpz1M9n_Tao8gszRDbA5SegIzehn12hBoxs3WfzOPcpNZmLm62dx5yT6hQ_mog7dfwTAeWm_nZmI_if9wDlYHZnv05pjH7Qns8jFYuZva0bptOQVSXG6Z2GSUa1oN-4p0r1BJjugZnhDQ6iN6cFpKd75ddT3GG_gNYmWBtImngCFefzrjws03l-nGgherfJMst11kKRPJmDdhsYIFp9lUu_eUCT4BlQZkMcnbFsbCvnHFHP07HwABOCZc83Y8okBkx-7E34nIXOy3zf8ZY0v-AyokrxySIwzSBX9juOVl1BRpGbGqsEipMw-TuTvB_3QPtGYRISZm3Th7HK16w';
+    $accessToken = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IjY4MTg1ZmYxLTRlNTEtNGNlOS1hZjFjLTY4OTgxMjIwMzMxNyJ9.eyJUb2tlblR5cGUiOjUsIklzc3VlSW5zdGFudCI6MTU5NzEyNDM5MSwiZXhwIjoxNTk3MTUzMTkxLCJVc2VySWQiOiI1MDEzZTc2My00Y2ViLTQ1ZDQtYWIwMC0yMjkzNmZhMjcyODgiLCJzaXRlaWQiOjEsInNjcCI6WyJzaWduYXR1cmUiLCJjbGljay5tYW5hZ2UiLCJvcmdhbml6YXRpb25fcmVhZCIsInJvb21fZm9ybXMiLCJncm91cF9yZWFkIiwicGVybWlzc2lvbl9yZWFkIiwidXNlcl9yZWFkIiwidXNlcl93cml0ZSIsImFjY291bnRfcmVhZCIsImRvbWFpbl9yZWFkIiwiaWRlbnRpdHlfcHJvdmlkZXJfcmVhZCIsImR0ci5yb29tcy5yZWFkIiwiZHRyLnJvb21zLndyaXRlIiwiZHRyLmRvY3VtZW50cy5yZWFkIiwiZHRyLmRvY3VtZW50cy53cml0ZSIsImR0ci5wcm9maWxlLnJlYWQiLCJkdHIucHJvZmlsZS53cml0ZSIsImR0ci5jb21wYW55LnJlYWQiLCJkdHIuY29tcGFueS53cml0ZSJdLCJhdWQiOiJmMGYyN2YwZS04NTdkLTRhNzEtYTRkYS0zMmNlY2FlM2E5NzgiLCJhenAiOiJmMGYyN2YwZS04NTdkLTRhNzEtYTRkYS0zMmNlY2FlM2E5NzgiLCJpc3MiOiJodHRwczovL2FjY291bnQtZC5kb2N1c2lnbi5jb20vIiwic3ViIjoiNTAxM2U3NjMtNGNlYi00NWQ0LWFiMDAtMjI5MzZmYTI3Mjg4IiwiYW1yIjpbImludGVyYWN0aXZlIl0sImF1dGhfdGltZSI6MTU5NzEyNDM4NywicHdpZCI6IjU1NTg4ZGQzLTMzYjMtNDIxMi1hZDRjLTY3MjE3MzNiMjZlNiJ9.fWlgfDGPzltuNRuT2X5wJ8amEXqydtu2l6Ipoh3cXFxtyXUQ-h4Um6b65Kc5NlFdqy8NKvhzKNQqMqqEohrGn3kljnjIVJ-wtbezRSFbP8Z5NDlOQEidC1BQmTPoO40DbpEClJUjFEBdIkiTH3ZxfM1rrgjRAAYK5yS7ND1Z_XnKFnrcc7X7yPunVvq-pWQJ9Dm7J1jAuzGcphVd4whH02aR7b_OkQaVe1EKpXFo0dGLh495sGgomAJOn3H6W99aYBlaopCbEGQ6eJPXTq3qBMeQXoP9a3omYuQuX5E-lVRJJSthPEXhIIILtuKVEzoefmLpdg2U8XztC06oAGp1Vg';
     # Obtain your accountId from appdemo.docusign.com -- the account id is shown in the drop down on the
     # upper right corner of the screen by your picture or the default picture. 
     $accountId = '11064736';
@@ -171,7 +319,7 @@ function _mymodule_article_form_validate(&$form, $form_state){
 
     $signHere = new DocuSign\eSign\Model\SignHere([ # DocuSign SignHere field/tab
         'document_id' => '1', 'page_number' => '1', 'recipient_id' => '1', 
-        'tab_label' => 'SignHereTab', 'x_position' => '195', 'y_position' => '147'
+        'tab_label' => 'SignHereTab', 'x_position' => '220', 'y_position' => '647'
     ]);
 
     # Add the tabs to the signer object
