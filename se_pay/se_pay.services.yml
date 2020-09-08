@@ -1,0 +1,4 @@
+services:
+  se_pay.payment:
+    class: Drupal\se_pay\PaymentService
+    arguments: ["@config.factory", "@http_client"]

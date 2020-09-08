@@ -1,0 +1,5 @@
+se_pay.settings:
+  title: "Paypal Settings"
+  description: "Configure Paypal settings"
+  route_name: se_pay.admin_settings
+  parent: system.admin_config_content

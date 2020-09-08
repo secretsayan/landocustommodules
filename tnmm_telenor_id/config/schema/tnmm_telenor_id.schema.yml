@@ -1,0 +1,37 @@
+tnmm_telenor_id.settings:
+  type: config_object
+  label: "Telenor ID Settings"
+  mapping:
+    host:
+      type: string
+      label: "Telenor ID Host"
+    client_id:
+      type: string
+      label: "Client ID"
+    client_secret:
+      type: string
+      label: "Client Secret"
+    home_url:
+      type: string
+      label: "Home URL"
+    redirect_uri:
+      type: string
+      label: "Redirect URI"
+    scope:
+      type: string
+      label: "Scope"
+    login_redirect:
+      type: string
+      label: "Login Redirect"
+    logout_redirect:
+      type: string
+      label: "Logout Redirect"
+    post_logout_redirect_uri:
+      type: string
+      label: "Post Logout Redirect URI"
+    timeout_oauth_token:
+      type: number
+      label: "Timeout setting for oauth/token"
+    timeout_oauth_userinfo:
+      type: string
+      label: "Timeout setting for oauth/userinfo"

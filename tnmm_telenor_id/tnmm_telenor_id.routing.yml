@@ -1,0 +1,35 @@
+tnmm_telenor_id.authorize:
+  path: "/connect-login"
+  defaults:
+    _controller: '\Drupal\tnmm_telenor_id\Controller\TelenoridController::authorize'
+    _title: "Authorize"
+  requirements:
+    _permission: "access content"
+tnmm_telenor_id.authenticate:
+  path: "/callback/telenorid"
+  defaults:
+    _controller: '\Drupal\tnmm_telenor_id\Controller\TelenoridController::authenticate'
+    _title: "Authenticate"
+  requirements:
+    _permission: "access content"
+tnmm_telenor_id.telenoridlogout:
+  path: "/telenor-logout"
+  defaults:
+    _controller: '\Drupal\tnmm_telenor_id\Controller\TelenoridController::telenorLogout'
+    _title: "Telenor Logout"
+  requirements:
+    _permission: "access content"
+tnmm_telenor_id.drupallogout:
+  path: "/logoutcallback/telenorid"
+  defaults:
+    _controller: '\Drupal\tnmm_telenor_id\Controller\TelenoridController::ensureLogout'
+    _title: "Ensure Logout"
+  requirements:
+    _permission: "access content"
+tnmm_telenor_id.admin_settings:
+  path: '/admin/config/content/telenorid'
+  defaults:
+    _form: '\Drupal\tnmm_telenor_id\Form\TelenoridSettingsForm'
+    _title: 'Telenor ID Settings'
+  requirements:
+    _permission: 'administer content'   

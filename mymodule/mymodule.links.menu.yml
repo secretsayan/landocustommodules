@@ -1,18 +1,18 @@
 mymodule.herolist:
   title: Herolist
-  description: "This is a herolist"
+  description: "Herolist"
   route_name: mymodule.herolist
   menu_name: main
   weight: 1
 mymodule.heroform:
     title: Heroform
-    description: "This is a Heroform"
+    description: "Heroform"
     route_name: mymodule.heroform
     menu_name: main
     weight: 2
 mymodule.ajaxform:
     title: Ajaxform
-    description: "This is a Heroform"
+    description: "Ajaxform"
     route_name: mymodule.ajaxform
     menu_name: main
     weight: 3

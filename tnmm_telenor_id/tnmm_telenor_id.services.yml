@@ -1,0 +1,4 @@
+services:
+  tnmm_telenor_id.apiService:
+    class: Drupal\tnmm_telenor_id\TelenoridService
+    arguments: ["@entity_type.manager"]

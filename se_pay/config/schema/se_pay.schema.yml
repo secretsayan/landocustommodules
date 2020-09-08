@@ -1,0 +1,25 @@
+se_pay.settings:
+    type: config_object
+    label: "Telenor ID Settings"
+    mapping:
+      sessionid:
+        type: string
+        label: "Session ID configured in IPP"
+      username:
+        type: string
+        label: "Username Registered with IPP"
+      password:
+        type: string
+        label: "Password Registered with IPP"
+      dl:
+        type: string
+        label: "DL registered with IPP"
+      serverurl:
+        type: string
+        label: "Server URL"
+      userurl:
+        type: string
+        label: "User URL"
+      hostippurl:
+        type: string
+        label: "User URL"

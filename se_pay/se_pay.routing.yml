@@ -1,0 +1,35 @@
+se_pay.paypal:
+  path: "/payment/paypal"
+  defaults:
+    _controller: '\Drupal\se_pay\Controller\PaypalController::paypalPaymentHandler'
+    _title: "Paypal Payment"
+  requirements:
+    _permission: "access content"
+se_pay.admin_settings:
+  path: "/admin/config/content/paypal"
+  defaults:
+    _form: '\Drupal\se_pay\Form\PaypalSettingsForm'
+    _title: "Paypal Settings"
+  requirements:
+    _permission: "administer content"
+se_pay.post:
+  path: "/payment/paypal/success-server"
+  defaults:
+    _controller: '\Drupal\se_pay\Controller\PaypalController::paypalResponseHandler'
+  methods: [POST]
+  requirements:
+    _permission: "access content"
+se_pay.creditcard:
+  path: "/payment/creditcard"
+  defaults:
+    _controller: '\Drupal\se_pay\Controller\CreditCardController::creditCardPaymentHandler'
+    _title: "Credit Card Payment"
+  requirements:
+    _permission: "access content"
+se_pay.form_two:
+  path: "/form/payment/creditcard"
+  defaults:
+    _form: '\Drupal\se_pay\Form\SePaymentFormTwo'
+    _title: "Payment"
+  requirements:
+    _permission: "access content"

@@ -1,0 +1,11 @@
+host: "https://signin.telenorid-staging.com"
+client_id: "tnmm-myaccount-web"
+client_secret: "WY3MzgxTVjjNhNmYwMjdGNzhhNWyNDgw"
+home_url: "https://staging.telenor.com.mm"
+redirect_uri: "https://staging.telenor.com.mm/callback/telenorid"
+scope: "openid profile email phone tnmm.myaccount tnmm.ecommerce"
+login_redirect: "https://staging.telenor.com.mm/mytelenor"
+logout_redirect: "https://staging.telenor.com.mm"
+post_logout_redirect_uri: "https://staging.telenor.com.mm/logoutcallback/telenorid"
+timeout_oauth_userinfo: 5
+timeout_oauth_token: 5

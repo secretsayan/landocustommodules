@@ -1,0 +1,44 @@
+<?php
+
+/**
+ * @file
+ * Install, update and uninstall functions for the tnmm_telenorid module.
+ */
+
+/**
+ * Implements hook_schema
+ */
+function tnmm_telenor_id_schema()
+{
+    $schema['telenorid_state_values'] = [
+        'description' => 'Stores state values used during telenorid login.',
+        'fields' => [
+            'sid' => [
+                'type' => 'serial',
+                'unsigned' => TRUE,
+                'not null' => TRUE,
+            ],
+            'state' => [
+                'type' => 'varchar',
+                'length' => 255,
+                'not null' => TRUE,
+                'description' => 'State Value',
+            ],
+            'created_at' => [
+                'type' => 'int',
+                'not null' => TRUE,
+                'default' => 0,
+                'description' => "Created at",
+            ],
+            'status' => [
+                'type' => 'int',
+                'not null' => TRUE,
+                'default' => 0,
+                'description' => 'Status of state value',
+            ],
+        ],
+        'primary key' => ['sid'],
+    ];
+
+    return $schema;
+}

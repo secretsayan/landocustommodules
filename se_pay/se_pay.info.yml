@@ -1,0 +1,5 @@
+name: Simply Energy Paypal Integrations
+type: module
+description: "Paypal form and Controllers and Services are incorporated in this module"
+core: 8.x
+package: Simply Energy

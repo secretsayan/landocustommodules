@@ -1,0 +1,7 @@
+sessionid: "setest_12345"
+username: "wipro.demo.api"
+password: "jtu65uguhT"
+dl: "onivr36942"
+serverurl: "https://staging.se-resource.net/ipp/success-server/"
+userurl: "https://localhost:32768/user"
+hostippurl: "https://demo.ippayments.com.au/access/index.aspx"

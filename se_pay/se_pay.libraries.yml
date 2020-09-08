@@ -1,0 +1,7 @@
+se_payment_bambora:
+  js:
+    https://customcheckout.bambora.com.au/2.0.0/customcheckout.js:
+      { type: external }
+    js/se_payment.js: {}
+  dependencies:
+    - core/jquery
