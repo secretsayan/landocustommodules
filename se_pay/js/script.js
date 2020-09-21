@@ -1,8 +1,9 @@
-console.log("library loaded: Payment");
-
-(function ($) {
+(function ($, Drupal, drupalSettings) {
+  "use strict";
+  console.log("library loaded: Payment");
   Drupal.behaviors.paypalpayment = {
-    attach: function (context, settings) {
+    attach: function (context) {
+
       $("#paypal-btn").click(function (e) {
         console.log("clicked");
         e.preventDefault();
@@ -26,7 +27,7 @@ console.log("library loaded: Payment");
             // dont get parsed as JSON (probs headers)
             console.log(data);
             var obj = JSON.parse(data);
-            // alert(obj);
+            alert(obj);
             window.location = obj;
             return;
 
@@ -72,4 +73,4 @@ console.log("library loaded: Payment");
       });
     },
   };
-})(jQuery);
+})(jQuery, Drupal, drupalSettings);

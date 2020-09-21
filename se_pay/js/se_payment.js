@@ -7,7 +7,7 @@
 
 (function ($, Drupal, drupalSettings) {
   "use strict";
-  console.log("Clicked 22");
+
   Drupal.behaviors.sePayment = {
     attach: function (context) {
       this.initBamboraCheckout(context);

@@ -5,3 +5,9 @@ se_payment_bambora:
     js/se_payment.js: {}
   dependencies:
     - core/jquery
+payment:
+  js:
+    js/script.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal

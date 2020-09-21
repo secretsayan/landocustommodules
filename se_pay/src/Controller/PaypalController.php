@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Drupal\se_pay\PaymentService;
 use Drupal\Component\Utility\Html;
 use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\TempStore\SharedTempStore;
 
 /**
  * Controller for Paypal.
@@ -29,12 +30,20 @@ class PaypalController extends ControllerBase {
    */
   protected $configFactory;
 
+    /**
+   * Config factory data member.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $sharedTempStore;
+
   /**
    * Constructor for this class.
    */
-  public function __construct(PaymentService $payPalService, ConfigFactoryInterface $configFactory) {
+  public function __construct(PaymentService $payPalService, ConfigFactoryInterface $configFactory, SharedTempStore $sharedTempStore) {
     $this->payPalService = $payPalService;
     $this->configFactory = $configFactory;
+    $this->sharedTempStore = $sharedTempStore;
   }
 
   /**
@@ -45,7 +54,8 @@ class PaypalController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     return new static(
           $container->get('se_pay.payment'),
-          $container->get('config.factory')
+          $container->get('config.factory'),
+          $container->get('tempstore.shared')
       );
   }
 
@@ -125,11 +135,15 @@ class PaypalController extends ControllerBase {
 
     $incoming = $request->request->all();
 
-    foreach ($incoming as $key => $value) {
-      if (!empty($incoming[$key])) {
-        $_SESSION["PAYPAL-" . $key] = $value;
-      }
-    }
+    $tempstore =  $this->sharedTempStore->get('se_pay');
+    $tempstore->set("Receipt-" . $incoming['SessionId'], $incoming['Receipt']);
+    $tempstore->set("DeclinedCode-" . $incoming['SessionId'], $incoming['DeclinedCode']);
+    $tempstore->set("DeclinedMessage-" . $incoming['SessionId'], $incoming['DeclinedMessage']);
+
+    //\Drupal::state()->set('receipt', 'foo');
+   // $_SESSION["ipp-receipt"] = "abc";
+    //\Drupal::logger('Paypal')->info("Request 2 SESSIOn: " . print_r($_SESSION,TRUE));
+
 
     return new JsonResponse(json_encode($incoming));
   }

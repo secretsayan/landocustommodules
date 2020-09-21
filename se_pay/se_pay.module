@@ -1,0 +1,13 @@
+<?php
+
+/**
+ * Implements hook_page_attachments().
+ */
+function se_pay_page_attachments(array &$page) {
+
+  $tempstore = \Drupal::service('tempstore.shared')->get('se_pay');
+  $page['#attached']['drupalSettings']['receipt'] = $tempstore->get("Receipt-" . $_SESSION["ipp-session"]);
+  $page['#attached']['drupalSettings']['declinedcode'] = $tempstore->get("DeclinedCode-" . $_SESSION["ipp-session"]);
+  $page['#attached']['drupalSettings']['declinedmessage'] = $tempstore->get("DeclinedMessage-" . $_SESSION["ipp-session"]);
+
+}
