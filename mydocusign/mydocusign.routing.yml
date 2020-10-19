@@ -1,0 +1,11 @@
+mydocusign.statuschange:
+  path: "/docusign-webhook"
+  defaults:
+    _controller: '\Drupal\mydocusign\Controller\DocusignController::statusChangeHandler'
+    _title: "Docusign Webhook"
+  methods: [POST]
+  requirements:
+    _permission: "access content"
+
+
+/verify/<submission-id>

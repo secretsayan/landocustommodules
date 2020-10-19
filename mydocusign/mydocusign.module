@@ -1,0 +1,43 @@
+<?php
+
+/**
+ * @file
+ * Module file for implementing hooks.
+ */
+
+/**
+ * Implements hook_form_alter().
+ *
+ * @param $form
+ * @param $form_state
+ * @param $form_id
+ */
+function mydocusign_form_alter(&$form, &$form_state, $form_id)
+{
+  if ($form_id == "webform_submission_employee_registration_node_1_add_form" || "webform_submission_mobile_hoisting_devices_operatin_node_27_add_form") {
+    $form_str = "https://demo.docusign.net/Member/PowerFormSigning.aspx?";
+    foreach ($form_state->getValues() as $key6 => $val6) {
+      if ($key6 == "signer_username") {
+        $key6 = "Signer_UserName";
+      } elseif ($key6 == "signer_email") {
+        $key6 = "Signer_Email";
+      }
+
+      if ($key6 == "location") {
+        for ($i = 0; $i <= 1; $i++) {
+          foreach ($val6[$i] as $keycomposite => $valcomposite) {
+            $form_str .= $keycomposite . ($i + 1) . "=" . $valcomposite . "&";
+          }
+        }
+      }
+
+      $form_str .= $key6 . "=" . $val6 . "&";
+      $form_str = str_replace(' ', '%20', $form_str);
+      $form_str = str_replace('&submit=Submit&', '', $form_str);
+      urlencode($form_str);
+    }
+    $form_preprocessed = "<p><iframe height='500' id='myiframe' width='100%' src= " . $form_str . " ></iframe></p>";
+    $form_state->setValue("processed_text", $form_preprocessed);
+    $form['elements']['document_signing']['processed_text']['#text'] = $form_preprocessed;
+  }
+}

@@ -1,0 +1,4 @@
+name: My Docusign 
+description: Drupal-Docusign Integration
+type: module
+core: 8.x
