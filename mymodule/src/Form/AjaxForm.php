@@ -17,7 +17,7 @@ class AjaxForm extends FormBase
 {
     /**
      * Function to get Form ID.
-     * 
+     *
      * @return String
      */
     public function getFormID()
@@ -26,7 +26,7 @@ class AjaxForm extends FormBase
     }
     /**
      * Function for Build Form.
-     * 
+     *
      * @return Array.
      */
     public function buildForm(array $form, FormStateInterface $form_state)
@@ -58,31 +58,53 @@ class AjaxForm extends FormBase
 
     /**
      * Ajax callback function.
-     * 
+     *
      * @return AjaxResponse.
      */
     public function setMessage(array &$form, FormStateInterface $form_state)
     {
         $winner = rand(1, 2);
         $response = new AjaxResponse();
+
+      if(empty($form_state->getValue('rival_1')) || empty($form_state->getValue('rival_2')) ) {
+
         $response->addCommand(
-            new HtmlCommand(
-                '.result',
-                'The winner is '. $form_state->getValue("rival_" . $winner)
-            )
+          new HtmlCommand(
+            '.result',
+            'Insufficient input' . $form_state->getValue("rival_" . $winner)
+          )
         );
+
+      } else {
+
+        $response->addCommand(
+          new HtmlCommand(
+            '.result',
+            'The winner is ' . $form_state->getValue("rival_" . $winner)
+          )
+        );
+
+      }
 
         return $response;
 
     }
 
-    /**
-     * Form Submit.
-     */
+  /**
+   * Form Submit.
+   * @param array $form
+   * @param FormStateInterface $form_state
+   */
     public function submitForm(array &$form, FormStateInterface $form_state)
     {
         $winner = rand(1, 2);
-        drupal_set_message('The Winner is :' .  $form_state->getValue('rival_' . $winner));
+
+       //if(empty($form_state->getValue('rival_1')) || empty($form_state->getValue('rival_2')) ){
+         \Drupal::messenger()->addError(t('Insufficient input'));
+       //} else {
+        // \Drupal::messenger()->addMessage(t("'The Winner is :' .  $form_state->getValue('rival_' . $winner)"));
+       //}
+
     }
 
 
